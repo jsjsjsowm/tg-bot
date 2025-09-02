@@ -618,7 +618,7 @@ class ScheduleBot:
 ⏱️ **Время работы:**
 • Запущен: {bot_stats['start_time'].strftime('%Y-%m-%d %H:%M:%S')}
 • Время работы: {str(uptime).split('.')[0]}
-• Последняя активность: {bot_stats['last_activity'].strftime('%H:%M:%S')}
+• Последняя активность: {bot_stats['last_activity'].strftime('%Y-%m-%d %H:%M:%S')}
 
 🕐 **Текущее время:** {current_time.strftime('%Y-%m-%d %H:%M:%S')}"""
             
@@ -915,11 +915,18 @@ if __name__ == '__main__':
     
     print(f"🚀 Starting E-24 Schedule Bot")
     print(f"🤖 Bot token: {TOKEN[:10]}...")
-    print(f"📡 Webhook URL: {WEBHOOK_URL}/webhook")
     
-    # Railway использует переменную PORT, по умолчанию 5000
+    # Исправляем двойной слэш в webhook URL
+    webhook_base = WEBHOOK_URL.rstrip('/') if WEBHOOK_URL else ''
+    webhook_full = f"{webhook_base}/webhook"
+    print(f"📡 Webhook URL: {webhook_full}")
+    
+    # Railway использует переменную PORT
     port = int(os.getenv('PORT', 5000))
     host = '0.0.0.0'
     
     print(f"🌐 Starting server on {host}:{port}")
+    print(f"🔧 Railway PORT env: {os.getenv('PORT', 'Not set')}")
+    print(f"🔧 WEBHOOK_URL env: {WEBHOOK_URL}")
+    
     app.run(host=host, port=port, debug=False)
