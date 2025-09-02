@@ -909,6 +909,20 @@ def api_schedule():
         'today_schedule': schedule_bot.get_today_schedule()
     })
 
+@app.route('/health')
+def health_check():
+    """Health check endpoint for Railway"""
+    return jsonify({
+        'status': 'healthy',
+        'bot_running': True,
+        'timestamp': datetime.now(moscow_tz).isoformat()
+    }), 200
+
+@app.route('/favicon.ico')
+def favicon():
+    """Favicon endpoint to prevent 404s"""
+    return '', 204
+
 if __name__ == '__main__':
     if not TOKEN:
         print("❌ BOT_TOKEN environment variable is required!")
@@ -930,4 +944,5 @@ if __name__ == '__main__':
     print(f"🔧 Railway PORT env: {os.getenv('PORT', 'Not set')}")
     print(f"🔧 WEBHOOK_URL env: {WEBHOOK_URL}")
     
-    app.run(host=host, port=port, debug=False)
+    # Запуск с threaded=True для Railway
+    app.run(host=host, port=port, debug=False, threaded=True)
