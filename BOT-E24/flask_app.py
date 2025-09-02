@@ -205,22 +205,23 @@ class ScheduleBot:
         return SCHEDULE.get(current_day, [])
 
     def setup_webhook(self):
-        """Setup webhook for the bot"""
-        if WEBHOOK_URL and WEBHOOK_URL != "https://your-domain.com":
-            webhook_data = {
-                'url': f"{WEBHOOK_URL}/webhook",
-                'allowed_updates': ['message', 'callback_query']
-            }
-            try:
-                response = self.session.post(SET_WEBHOOK_URL, data=webhook_data, timeout=30)
-                if response.json().get('ok'):
-                    print(f"✅ Webhook set to: {WEBHOOK_URL}/webhook")
-                else:
-                    print(f"❌ Failed to set webhook: {response.text}")
-            except Exception as e:
-                print(f"❌ Error setting webhook: {e}")
-        else:
-            print("❌ WEBHOOK_URL not configured properly")
+        """Устанавливаем webhook для получения обновлений"""
+        # Исправляем двойной слэш в webhook URL
+        webhook_base = WEBHOOK_URL.rstrip('/') if WEBHOOK_URL else ''
+        webhook_url = f"{webhook_base}/webhook"
+        
+        webhook_data = {
+            'url': webhook_url,
+            'allowed_updates': ['message', 'callback_query']
+        }
+        try:
+            response = self.session.post(SET_WEBHOOK_URL, data=webhook_data, timeout=30)
+            if response.json().get('ok'):
+                print(f"✅ Webhook set to: {webhook_url}")
+            else:
+                print(f"❌ Failed to set webhook: {response.text}")
+        except Exception as e:
+            print(f"❌ Error setting webhook: {e}")
     
     def send_message(self, chat_id, text, reply_markup=None):
         """Send message to chat with retry logic"""
