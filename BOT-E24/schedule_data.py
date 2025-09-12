@@ -29,10 +29,9 @@ SCHEDULE = {
     "friday": [
         {"time": "8:30-9:50", "subject": "Иностранный язык/Физика и астрономия", "pair_number": 1},
         {"time": "10:00-11:20", "subject": "Физика и астрономия", "pair_number": 2},
-        {"time": "12:00-13:20", "subject": "Математика", "pair_number": 3},
-        {"time": "13:30-14:50", "subject": "Физическая культура", "pair_number": 4}
+        {"time": "12:00-13:20 / 13:30-14:50", "subject": "Математика/Физическая культура", "pair_number": "3/4"}
     ]
-}
+
 
 # Break schedule
 BREAK_SCHEDULE = [
