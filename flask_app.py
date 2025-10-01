@@ -638,17 +638,21 @@ class ScheduleBot:
             logger.error(f"Error getting stats: {e}")
             self.send_message(chat_id, "Ошибка получения статистики")
 
-# Initialize bot
-schedule_bot = ScheduleBot()
-
 # Flask app
 app = Flask(__name__)
+
+# Bot instance will be initialized later
+schedule_bot = None
 
 # Webhook endpoint
 @app.route('/webhook', methods=['POST'])
 def webhook():
     """Handle incoming webhook from Telegram"""
     try:
+        if not schedule_bot:
+            logger.error("Bot not initialized")
+            return 'Bot not ready', 503
+            
         json_data = request.get_json()
         
         if json_data and 'message' in json_data:
@@ -937,6 +941,10 @@ if __name__ == '__main__':
         print("❌ BOT_TOKEN environment variable is required!")
         exit(1)
     
+    if not WEBHOOK_URL:
+        print("❌ WEBHOOK_URL environment variable is required!")
+        exit(1)
+    
     print(f"🚀 Starting E-24 Schedule Bot")
     print(f"🤖 Bot token: {TOKEN[:10]}...")
     
@@ -944,6 +952,11 @@ if __name__ == '__main__':
     webhook_base = WEBHOOK_URL.rstrip('/') if WEBHOOK_URL else ''
     webhook_full = f"{webhook_base}/webhook"
     print(f"📡 Webhook URL: {webhook_full}")
+    
+    # Initialize bot after environment variables are confirmed
+    print("🤖 Initializing bot...")
+    schedule_bot = ScheduleBot()
+    print("✅ Bot initialized successfully")
     
     # Railway использует переменную PORT
     port = int(os.getenv('PORT', 5000))
