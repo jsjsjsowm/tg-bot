@@ -1,11 +1,16 @@
 #!/bin/bash
+set -e
 
-# Install dependencies if requirements.txt exists
-if [ -f "requirements.txt" ]; then
-    echo "Installing Python dependencies..."
-    pip install -r requirements.txt
-fi
+echo "Starting deployment process..."
+
+# Install Python dependencies
+echo "Installing dependencies..."
+pip install --no-cache-dir -r requirements.txt
+
+# Initialize database
+echo "Initializing database..."
+python -c "from flask_app import init_db; init_db()"
 
 # Start the Flask application
 echo "Starting Flask application..."
-python flask_app.py
+exec python flask_app.py
