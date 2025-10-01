@@ -1,0 +1,13 @@
+[phases.setup]
+nixPkgs = ['python39', 'pip']
+
+[phases.install]
+cmds = ['pip install --no-cache-dir -r requirements.txt']
+
+[phases.build]
+cmds = [
+  'python -c "import flask_app; flask_app.init_db(); print(\"Database initialized successfully\")"'
+]
+
+[start]
+cmd = 'python flask_app.py'
