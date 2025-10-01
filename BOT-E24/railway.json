@@ -1,10 +1,11 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "nixpacks"
+    "builder": "nixpacks",
+    "buildCommand": "pip install -r requirements.txt"
   },
   "deploy": {
-    "startCommand": "python flask_app.py",
+    "startCommand": "./start.sh",
     "restartPolicyType": "always"
   }
 }
