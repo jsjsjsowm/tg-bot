@@ -206,8 +206,17 @@ class ScheduleBot:
 
     def setup_webhook(self):
         """Устанавливаем webhook для получения обновлений"""
+        # Проверяем наличие необходимых переменных окружения
+        if not TOKEN:
+            print("❌ BOT_TOKEN environment variable is required!")
+            return
+            
+        if not WEBHOOK_URL:
+            print("❌ WEBHOOK_URL environment variable is required!")
+            return
+        
         # Исправляем двойной слэш в webhook URL
-        webhook_base = WEBHOOK_URL.rstrip('/') if WEBHOOK_URL else ''
+        webhook_base = WEBHOOK_URL.rstrip('/')
         webhook_url = f"{webhook_base}/webhook"
         
         webhook_data = {
