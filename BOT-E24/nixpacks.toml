@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ['python39', 'pip']
+
+[phases.install]
+cmds = ['pip install -r requirements.txt']
+
+[phases.build]
+cmds = ['python -c "from flask_app import init_db; init_db()"']
+
+[start]
+cmd = 'python flask_app.py'
